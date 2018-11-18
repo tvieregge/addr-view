@@ -92,6 +92,7 @@
 
 			var callback =
 				function gcode(results, status) {
+					console.log(results);
 					if (status !== 'OK') {
 						alert('Geocode was not successful for the following reason: ' + status);
 						return;
@@ -99,11 +100,13 @@
 					const addr_col = 0;
 					const name_col = 1;
 					var pos = results[addr_col].geometry.location;
-					console.log(results);
 					var marker = new google.maps.Marker({
 						position: pos,
-						lable: results[name_col],
 						map: map});
+					var infowindow = new google.maps.InfoWindow({
+						content: results[name_col]
+					});
+					infowindow.open(map, marker);
 				}
 
 			function printTable(file) {
