@@ -1,0 +1,27 @@
+<meta charset="UTF-8"> 
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+/* Set the size of the div element that contains the map */
+#map {
+	height: 500px;  /* The height is 500 pixels */
+	width: 100%;  /* The width is the width of the web page */
+}
+		</style>
+	</head>
+	<body>
+		<h3>My Google Maps Demo</h3>
+		<!--The div element for the map -->
+		<div id="map"></div>
+		<input type="file" id="files" name="files[]" multiple />
+
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script
+			type="text/javascript"
+			src="https://combinatronics.com/evanplaice/jquery-csv/master/src/jquery.csv.js"
+		></script>
+		<script src="deploy-addr-view.js"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBj_g2-f0gsMFEuE0u_5t7muj3vrhfkl_M&callback=initMap">	</script>
+	</body>
+</html>
