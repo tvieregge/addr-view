@@ -39,7 +39,7 @@
 		<script>
 			const addr_col = 0;
 			const name_col = 1;
-			var csv_data = null;
+			var csv_data;
 
 			$(document).ready(function() {
 				if(isAPIAvailable()) {
@@ -78,26 +78,6 @@
 				printTable(file);
 			}
 
-			function create_callback(i) {
-				var callback =
-					function gcode(results, status) {
-						console.log(results);
-						if (status !== 'OK') {
-							alert('Geocode was not successful for the following reason: ' + status);
-							return;
-						}
-						var pos = results[0].geometry.location;
-						var marker = new google.maps.Marker({
-							position: pos,
-							map: map});
-						var infowindow = new google.maps.InfoWindow({
-							content: csv_data[i][name_col]
-						});
-						infowindow.open(map, marker);
-					}
-				return callback;
-			}
-
 			function printTable(file) {
 				var geocoder = new google.maps.Geocoder();
 				var reader = new FileReader();
@@ -106,11 +86,24 @@
 					var csv = event.target.result;
 					csv_data = $.csv.toArrays(csv);
 					var html = '';
-					var i=0;
-					for(var row in csv_data) {
-						var cb = create_callback(i);
-						geocoder.geocode({'address' : csv_data[row][0]}, cb);
-						i += 1;
+					for(let row in csv_data) {
+						geocoder.geocode(
+							{'address' : csv_data[row][0]},
+							function gcode(results, status) {
+								console.log(results);
+								if (status !== 'OK') {
+									alert('Geocode was not successful for the following reason: ' + status);
+									return;
+								}
+								var pos = results[0].geometry.location;
+								var marker = new google.maps.Marker({
+									position: pos,
+									map: map});
+								var infowindow = new google.maps.InfoWindow({
+									content: csv_data[row][name_col]
+								});
+								infowindow.open(map, marker);
+							});
 					}
 				};
 				reader.onerror = function(){ alert('Unable to read ' + file.fileName); };
